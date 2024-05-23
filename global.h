@@ -11,91 +11,65 @@ pridėtas nuorinimas
  
 WebServer server(80);                  // The Webserver
 //ESP8266HTTPUpdateServer httpUpdater;
-/*
- * Login page
- */
+const char Naujinimas[] PROGMEM = R"=====(
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+  <div class="smartphone">
+  <div class="content">
+  <form method='POST' action='#' enctype='multipart/form-data' id='upload_form'>
+  <input type='file' name='update'>
+  <input type='submit' style="width:100px" class="myButton" value='Naujinti'>
+  </form>
+  <div id='prg'>progress: 0%</div>
+  <hr>
+<center><a href="admin.html" style="width:150px" class="myButton">Valdiklio konfigūravimas</a><br>
+<a href="/"style="width1250px"  class="myButton" >Valdiklio būsena</a></center>
+  </div>
+  <script>
+window.onload = function ()
+{	load("style.css","css", function() 
+	{		load("microajax.js","js", function() 
+		{				// Do something after load...
+		});
+	});
+}
+function load(e,t,n){if("js"==t){var a=document.createElement("script");a.src=e,a.type="text/javascript",a.async=!1,a.onload=function(){n()},document.getElementsByTagName("head")[0].appendChild(a)}else if("css"==t){var a=document.createElement("link");a.href=e,a.rel="stylesheet",a.type="text/css",a.async=!1,a.onload=function(){n()},document.getElementsByTagName("head")[0].appendChild(a)}}
 
-const char* loginIndex = 
- "<form name='loginForm'>"
-    "<table width='20%' bgcolor='A09F9F' align='center'>"
-        "<tr>"
-            "<td colspan=2>"
-                "<center><font size=4><b>KKK valdiklio programos naujinimas</b></font></center>"
-                "<br>"
-            "</td>"
-            "<br>"
-            "<br>"
-        "</tr>"
-        "<td>Username:</td>"
-        "<td><input type='text' size=25 name='userid'><br></td>"
-        "</tr>"
-        "<br>"
-        "<br>"
-        "<tr>"
-            "<td>Password:</td>"
-            "<td><input type='Password' size=25 name='pwd'><br></td>"
-            "<br>"
-            "<br>"
-        "</tr>"
-        "<tr>"
-            "<td><input type='submit' onclick='check(this.form)' value='Login'></td>"
-        "</tr>"
-    "</table>"
-"</form>"
-"<script>"
-    "function check(form)"
-    "{"
-    "if(form.userid.value=='admin' && form.pwd.value=='admin')"
-    "{"
-    "window.open('/serverIndex')"
-    "}"
-    "else"
-    "{"
-    " alert('Error Password or Username')/*displays error message*/"
-    "}"
-    "}"
-"</script>";
- 
-/*
- * Server Index Page
- */
- 
-const char* serverIndex = 
-"<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>"
-"<form method='POST' action='#' enctype='multipart/form-data' id='upload_form'>"
-   "<input type='file' name='update'>"
-        "<input type='submit' value='Update'>"
-    "</form>"
- "<div id='prg'>progress: 0%</div>"
- "<script>"
-  "$('form').submit(function(e){"
-  "e.preventDefault();"
-  "var form = $('#upload_form')[0];"
-  "var data = new FormData(form);"
-  " $.ajax({"
-  "url: '/update',"
-  "type: 'POST',"
-  "data: data,"
-  "contentType: false,"
-  "processData:false,"
-  "xhr: function() {"
-  "var xhr = new window.XMLHttpRequest();"
-  "xhr.upload.addEventListener('progress', function(evt) {"
-  "if (evt.lengthComputable) {"
-  "var per = evt.loaded / evt.total;"
-  "$('#prg').html('progress: ' + Math.round(per*100) + '%');"
-  "}"
-  "}, false);"
-  "return xhr;"
-  "},"
-  "success:function(d, s) {"
-  "console.log('success!')" 
- "},"
- "error: function (a, b, c) {"
- "}"
- "});"
- "});"
- "</script>";
+  $('form').submit(function(e){
+  e.preventDefault();
+  var form = $('#upload_form')[0];
+  var data = new FormData(form);
+   $.ajax({
+  url: '/update',
+  type: 'POST',
+  data: data,
+  contentType: false,
+  processData:false,
+  xhr: function() {
+  var xhr = new window.XMLHttpRequest();
+  xhr.upload.addEventListener('progress', function(evt) {
+  if (evt.lengthComputable) {
+  var per = evt.loaded / evt.total;
+  $('#prg').html('progress: ' + Math.round(per*100) + '%');
+  }
+  }, false);
+  return xhr;
+  },
+
+  success:function(d, s) {
+  console.log('success!')
+
+ },
+
+ error: function (a, b, c) {
+
+ }
+ });
+ });
+
+</script>
+)=====";
 
 
 boolean firstStart = true;                    // On firststart = true, NTP will try to get a valid time
@@ -134,12 +108,10 @@ struct strConfig {
   byte TurnOffMinute;
   byte TurnOnHour;
   byte TurnOnMinute;
-  byte LED_R;
-  byte LED_G;
-  byte LED_B;
 /* ********** kintamieji saulės kolektoriui ******************* */
  float k_skirtumas;
- long k_intervalas;
+ float k_uzsalimo_t;
+ int k_intervalas;
  boolean k_uzsalimas;
  boolean k_nuorinimas;
 
@@ -244,18 +216,6 @@ unsigned long PV_uzdarinejimo_pertrauka =6000;
 unsigned long Boilerio_siurblio_ijungimo_laikas;
 unsigned long Boilerio_siurblio_pertrauka =60000;
 byte PV_darinejimas = 60;
-/*
-**
-********* PID nustatymai **************
-**
-*/
-//Define Variables we'll be connecting to
-double Setpoint, Input, Output;
-
-//Specify the links and initial tuning parameters
-double Kp=12000, Ki=0, Kd=0;
-PID myPID(&Input, &Output, &Setpoint, config.Kp, config.Ki, config.Kd, DIRECT);
-//PID myPID(&Input, &Output, &Setpoint, 12000.00, config.Ki, config.Kd, DIRECT);
 
 int WindowSize = 30000;
 unsigned long windowStartTime;
@@ -263,7 +223,7 @@ unsigned long windowStartTime;
 boolean Laikmatis = false;
 /////////////////////////////////////////////////////////////////////////////////
 
-
+/* ******************** Relays *********************************** */
 #define RELAYPIN 32  // D4
 String RelayState = "OFF";
 String CollectorState = "OFF";

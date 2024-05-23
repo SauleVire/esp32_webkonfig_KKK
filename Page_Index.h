@@ -8,12 +8,12 @@ const char PAGE_EXAMPLE[] PROGMEM = R"=====(
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <div class="smartphone">
   <div class="content">
-<center><span class="textas">Katilinės valdiklis</span></center><hr>
+
 <table border="0"  cellspacing="0" cellpadding="3" style="width:300px" >
 <th colspan="2">
 <a href="/admin.html" class="myButton">Valdiklio konfigūravimas</a>
 <br>
-<b>Dabartinė ūkio būsena</b>
+<b>Dabartinė KKK ūkio būsena</b>
 </th><tr><td>
 <div align="right">Kolektorius :</div>
 <div align="right">Oras :</div>
@@ -106,7 +106,7 @@ void filldynamicdata()
     String values ="";
   values += "K_t|" + (String)Kolektorius +  "|div\n";
   values += "O_t|" + (String)OrasL +  "|div\n";
-  values += "rele|" + (String)RelayState +  "|div\n";
+  values += "rele|" + (String)CollectorState +  "|div\n";
   values += "laikas|" + (String) config.k_intervalas  +  "|div\n";
   values += "apsauga|" + (String)config.k_uzsalimas +  "|div\n";
   values += "nuorinimas|" + (String)config.k_nuorinimas +  "|div\n";

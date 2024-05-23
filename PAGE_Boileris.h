@@ -12,7 +12,7 @@ const char PAGE_BoilerioKonfiguracija[] PROGMEM = R"=====(
 <table border="0"  cellspacing="0" cellpadding="3" >
 <tr><td align="right">Boilerio įjungimo t (°C) :</td><td><input type="text" id="Bo_ON_T" name="Bo_ON_T" min="1" max="30" size="2" maxlength="2" value=""></td></tr>
 <tr><td align="right">Boilerio išjungimo t (°C) :</td><td><input type="text" id="Bo_OFF_T" name="Bo_OFF_T" min="1" max="20" size="2" maxlength="2" value=""></td></tr>
-<tr><td align="right">Įjungti dabar :</td><td><input type="checkbox" id="Bo_Rankinis_ijungimas" name="Bo_Rankinis_ijungimas"></td></tr>
+<tr><td align="right">Termostato įjungimas:</td><td><input type="checkbox" id="Bo_Rankinis_ijungimas" name="Bo_Rankinis_ijungimas"></td></tr>
 <tr><td colspan="2" align="center"><input type="submit" style="width:150px" class="myButton" value="Įrašyti"></td></tr>
 
 </table>
@@ -22,7 +22,7 @@ const char PAGE_BoilerioKonfiguracija[] PROGMEM = R"=====(
 <div align="left">
 <span class="textas">Boilerio įjungimo t (°C)</span><span class="textas1">- jei temperatūra žemesnė, o katile yra šilumos daugiau, įjungiamas boilerio siurbys.</span><br><br>
 <span class="textas">Boilerio išjungimo t (°C)</span></span><span class="textas1">- pasiekus nustatytą temperatūrą boilerio siurbys išjungiamas.<br><br>
-<span class="textas">Įjungti dabar</span></span><span class="textas1">- pažymėjus įjungiamas boilerio šildymas elektra.</span></div>
+<span class="textas">Termostato įjungimas</span></span><span class="textas1">- pažymėjus įjungiamas boilerio šildymas elektra.</span></div>
 
 
 </div></div>

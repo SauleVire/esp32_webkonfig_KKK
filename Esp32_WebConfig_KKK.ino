@@ -762,12 +762,12 @@ void setup ( void ) {
   server.on ( "/priskirtiDS18b20.html", send_PriskirtiDS18B20_html );
   server.on ( "/naujinimas.html", HTTP_GET, []() {
     server.sendHeader("Connection", "close");
-    server.send(200, "text/html", loginIndex);
+    server.send(200, "text/html", Naujinimas);
   });
-  server.on("/serverIndex", HTTP_GET, []() {
-    server.sendHeader("Connection", "close");
-    server.send(200, "text/html", serverIndex);
-  });
+//  server.on("/serverIndex", HTTP_GET, []() {
+//    server.sendHeader("Connection", "close");
+//    server.send(200, "text/html", serverIndex);
+//  });
   /*handling uploading firmware file */
   server.on("/update", HTTP_POST, []() {
     server.sendHeader("Connection", "close");
@@ -831,13 +831,7 @@ void setup ( void ) {
 //  Setup DS18b20 temperature sensor
 
   SetupDS18B20();
-Setpoint = Boileris + config.k_skirtumas;
-  //tell the PID to range between 0 and the full window size
-  myPID.SetOutputLimits(0, config.WindowSize);
 
-  //turn the PID on
-  myPID.SetMode(AUTOMATIC);
-//  timer.setInterval(15000L, KolektoriusT);
 
   pinMode(RELAYPIN,OUTPUT);
 
@@ -893,28 +887,21 @@ if (config.k_intervalas < 3) config.k_intervalas = 3;
   if ((unsigned long)(currentMillis - previousMillis) >= config.k_intervalas * 1000)
   { // įsimenamas paskutinio matavimo laikas
     previousMillis = currentMillis;
-
+    previousMillis = currentMillis;
     TemteraturosMatavimas();
+    Siurblys();
 // Jei įjungtas nuorinimo režimas arba apsauga nuo užšalimo ir kolektoriaus temperatūra artėja prie 0, įjungiamas siurblys
-    if (config.k_nuorinimas == 1 or ((Kolektorius < 0.68) & (config.k_uzsalimas == 1)))
-          { digitalWrite(RELAYPIN, HIGH); RelayState = "Įjungtas";
-                      if (millis() - previousMillis2 >= 20000)
-  { // įsimenamas paskutinio matavimo laikas
-    previousMillis2 = millis();
-       Serial.print("\nSiurblio rele įjungta ON (Nuorinimas, užšalimas)\n");
-  }
-       } else {
+//    if (config.k_nuorinimas == 1 or ((Kolektorius < config.k_uzsalimo_t) & (config.k_uzsalimas == 1)))
+//          { digitalWrite(RELAYPIN, HIGH); relayState = "ON(užšalimas)";
+//       Serial.print("\nSiurblio rele įjungta ON (Nuorinimas, užšalimas)\n");
+//       } else {Siurblys();
+       
 //Jei laikas sutampa su laiku, kai kolektoriaus šiluma niekinė, siurblys išjungiamas
-        if (DateTime.hour == config.TurnOffHour or DateTime.hour == config.TurnOffHour +1 )
-          { digitalWrite(RELAYPIN, LOW); RelayState = "Išjungtas(laikas)";
-            if (millis() - previousMillis2 >= 20000)
-  { // įsimenamas paskutinio matavimo laikas
-    previousMillis2 = millis();
-       Serial.print("\nSiurblio rele įjungta OFF (nurodytas išjungimo laikas)\n");
-  }     
-       } else {Siurblys();}
-       }
-    
+//        if (DateTime.hour == config.TurnOffHour or DateTime.hour == config.TurnOffHour +1 )
+//          { digitalWrite(RELAYPIN, LOW); relayState = "OFF(laikas)";
+//       Serial.print("\nSiurblio rele įjungta OFF (nurodytas išjungimo laikas)\n");
+//       } else {Siurblys();}
+//       }
 }
 /* ****************************** emoncms ****************************** */
 //ar aktyvuotas duomenų siuntimas į emoncms ir jau galima siųsti duomenis
