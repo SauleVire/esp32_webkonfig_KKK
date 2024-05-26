@@ -1,7 +1,7 @@
 void Boilerio_sildymas(){
   #ifdef DEBUGboileris
-  if (Bo_sSiurblys == true) Serial.println("Boilerio siublio busena: IJUNGTAS *** ON ***");
-    if (Bo_Siurblys == false) Serial.println("Boilerio siublio busena: ISUNGTAS *** OFF ***");
+  if (config.Bo_Siurblio_busena == true) Serial.println("Boilerio siublio busena: IJUNGTAS *** ON ***");
+    if (config.Bo_Siurblio_busena == false) Serial.println("Boilerio siublio busena: ISUNGTAS *** OFF ***");
   #endif 
 
 // Jei  boilerio viršus šaltesnis už boilerio šildymo išjungimo temperatūrą, 
@@ -15,7 +15,7 @@ void Boilerio_sildymas(){
 Serial.println("Boilerio siublys IJUNGTAS ***_ON_ ***__PRIEZASTIS:");
 Serial.print("B isjungimo temperatura- ");Serial.print(config.Bo_OFF_T);Serial.print(char(186));Serial.println("C");
 Serial.print("B ijungimo temperatura- ");Serial.print(config.Bo_ON_T);Serial.print(char(186));Serial.println("C");
-Serial.print("I isejime temperatura- ");Serial.print(KaOut);Serial.print(char(186));Serial.println("C");
+Serial.print("I isejime temperatura- ");Serial.print(Katilas);Serial.print(char(186));Serial.println("C");
 #endif 
    }}
 // Jei boilerio viršuje yra tiek šilumos, kiek nustatyta, arba katilo išėjime yra mažiau šilumos, 
@@ -35,24 +35,25 @@ Serial.print("I isejime temperatura- ");Serial.print(Katilas);Serial.print(char(
 //**************************************************************************************************************
 void Boilerio_termostatas(){
 // Jei boilerio viršus šaltesnis negu nustatyta ijungimo temperatura, arba boilerio viršus šaltesnis
-// už boilerio išjungimo temperatūrą, ir ijungtas termostatas, tai jungiamas elektrinis boilerio sildymas
-if ((Boileris < config.Bo_ON_T ) && (config.Bo_Termostatas_ON == true)){
+// už boilerio išjungimo temperatūrą, ir įjungtas termostatas, tai įjungiamas elektrinis boilerio šildymas
+if ((Boileris < config.Bo_ON_T ) && (config.Bo_Termostatas == true)){
        digitalWrite(BoTermostatas, LOW); 
        config.Bo_Termostato_busena = true; // zyme, kad termostatas dabar veikia
-//     B_Termostatas_ON = false;    // kai ijungiamas elektrinis boilerio sildymas, pakeiciama ijungimo zyme
+       Bo_thermostatState = "Įjungta";    // kai ijungiamas elektrinis boilerio sildymas, pakeičiama įjungimo žymė
 #ifdef DEBUGboileris
 Serial.print("Boilerio sildymas elektra I_J_U_N_G_T_A_S ***_ON_ *** iki- "); 
 Serial.print(config.Bo_OFF_T);Serial.print(char(186));Serial.println("C");
 Serial.println();
 #endif 
    }
-// Jei boilerio virsuje yra tiek šilumos, kiek nustatyta,  tai termostatas isjungia boilerio sildyma elektra
+// Jei boilerio virsuje yra tiek šilumos, kiek nustatyta,  tai termostatas išjungia boilerio šildymą elektra
      if ((Boileris >= config.Bo_OFF_T)  && (config.Bo_Termostato_busena == true)) { 
        digitalWrite(BoTermostatas, HIGH);
        config.Bo_Termostato_busena = false;
+       Bo_thermostatState = "Išjungta";    // kai išjungiamas elektrinis boilerio šildymas, pakeičiama išjungimo žymė
 #ifdef DEBUGboileris
 Serial.println("Ijungtas boilerio sildymas elektra I*S*J*U*N*G*T*A*S ***_OFF_ *** nuo- ");
-Serial.print(BoTop);Serial.print(char(186));Serial.println("C");
+Serial.print(Boileris);Serial.print(char(186));Serial.println("C");
 #endif      
    }     
 }

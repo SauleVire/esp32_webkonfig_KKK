@@ -14,6 +14,7 @@ const char PAGE_KolektoriausKonfiguracija[] PROGMEM = R"=====(
 <tr><td align="right">Laiko intervalas (s) :</td><td><input type="text" id="k_intervalas" name="k_intervalas" min="1" max="600" size="3" maxlength="3" value=""></td></tr>
 <tr><td align="right">Apsauga nuo užšalimo :</td><td><input type="checkbox" id="k_uzsalimas" name="k_uzsalimas"></td></tr>
 <tr><td align="right">Nuorinimas :</td><td><input type="checkbox" id="k_nuorinimas" name="k_nuorinimas"></td></tr>
+<tr><td align="right">Žiema :</td><td><input type="checkbox" id="k_ziema" name="k_ziema"></td></tr>
 <tr><td align="right">Kp :</td><td>        <input type="text" id="Kp"         name="Kp"         min="1" max="60000" size="6" value="""></td></tr>
 <tr><td align="right">Ki :</td><td>        <input type="text" id="Ki"         name="Ki"         min="1" max="60000" size="6"value=""></td></tr>
 <tr><td align="right">Kd :</td><td>        <input type="text" id="Kd"         name="Kd"         min="1" max="60000" size="6"value=""></td></tr>
@@ -64,6 +65,7 @@ void send_KolektoriausKonfiguracija_html()
   {
     config.k_uzsalimas = false;
     config.k_nuorinimas = false;
+    config.k_ziema = false;
     String temp = "";
     for ( uint8_t i = 0; i < server.args(); i++ ) {
       if (server.argName(i) == "k_skirtumas") config.k_skirtumas = server.arg(i).toFloat();
@@ -74,6 +76,7 @@ void send_KolektoriausKonfiguracija_html()
       if (server.argName(i) == "WindowSize") config.WindowSize = server.arg(i).toInt();
       if (server.argName(i) == "k_uzsalimas") config.k_uzsalimas = true; 
       if (server.argName(i) == "k_nuorinimas") config.k_nuorinimas = true; 
+      if (server.argName(i) == "k_ziema") config.k_ziema = true; 
 
     }
     WriteConfig();
@@ -95,12 +98,14 @@ void send_KolektoriausKonfiguracija_values_html()
   values += "WindowSize|" + (String) config.WindowSize + "|input\n";
   values += "k_uzsalimas|" + (String) (config.k_uzsalimas ? "checked" : "") + "|chk\n";
   values += "k_nuorinimas|" + (String) (config.k_nuorinimas ? "checked" : "") + "|chk\n";
+  values += "k_ziema|" + (String) (config.k_ziema ? "checked" : "") + "|chk\n";
 
 
   server.send ( 200, "text/plain", values);
   Serial.println(__FUNCTION__);
   Serial.print("k_uzsalimas : ");Serial.println(config.k_uzsalimas); 
   Serial.print("k_nuorinimas : ");Serial.println(config.k_nuorinimas); 
+  Serial.print("k_ziema : ");Serial.println(config.k_ziema); 
   Serial.print("k_intervalas : ");Serial.println(config.k_intervalas); 
   Serial.print("k_skirtumas : ");Serial.println(config.k_skirtumas); 
   Serial.print("Kp : ");Serial.println(config.Kp); 

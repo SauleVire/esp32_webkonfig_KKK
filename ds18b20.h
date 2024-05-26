@@ -71,10 +71,10 @@ void SetupDS18B20(){
 
 void TemteraturosMatavimas() {
   Kolektorius = DS18B20.getTempC(devAddr[config.Kid]);
-    if(DS18B20.getTempC(devAddr[config.Kid]) == DEVICE_DISCONNECTED_C) {    
+/*    if(DS18B20.getTempC(devAddr[config.Kid]) == DEVICE_DISCONNECTED_C) {    
     Serial.println("!! Klaida ! Ds18B20 Kolektorius rodmenys neteisingi");
     Serial.println("DEVICE_DISCONNECTED_C - "+DEVICE_DISCONNECTED_C);
-    return;                                }
+    return;                                } */
   Boileris = DS18B20.getTempC(devAddr[config.Bid]);
   OrasL = DS18B20.getTempC(devAddr[config.OLid]);
   OrasK = DS18B20.getTempC(devAddr[config.OKid]);
@@ -85,7 +85,7 @@ void TemteraturosMatavimas() {
 
   // Check if any reads failed and exit
   
-  if (Kolektorius == -127 or Kolektorius == 85 or Kolektorius > 127 ) {
+/*  if (Kolektorius == -127 or Kolektorius == 85 or Kolektorius > 127 ) {
     Kolektorius = KolektoriusOld;
     Serial.println("Klaida! Ds18B20 Kolektorius rodmenys neteisingi");  }
     else { KolektoriusOld = Kolektorius;}
@@ -94,6 +94,7 @@ void TemteraturosMatavimas() {
     Boileris = BoilerisOld;
     Serial.println("Klaida! Ds18B20 Boileris rodmenys neteisingi");  }
     else { BoilerisOld = Boileris;}
+    */
 /*
   if (OrasL == -127 or OrasL == 85 or OrasL > 127 ) {
     OrasL = OrasLOld;
@@ -128,25 +129,44 @@ void TemteraturosMatavimas() {
   DS18B20.requestTemperatures();
   
 }
+// saulės kolektoriaus siurblio valdymas
 void Siurblys(){
+  if (config.k_uzsalimas == 1) {
+    FreezingState = "Įjungta"; }
+  else {
+    FreezingState = "Išjungta"; }
+
+  if (config.k_nuorinimas == 1) {
+    Nuorinimas = "Įjungta"; } // collector refactiveness
+  else {
+    Nuorinimas = "Išjungta"; }
+
+  if (config.k_ziema == 0) {
+    Ziema = "Ne!";  // summer time
+
 
 // ************ Siurblio įjungimas ********************
 if (Kolektorius > Boileris + config.k_skirtumas) 
-      { digitalWrite(RELAYPIN, HIGH); 
+      { digitalWrite(SKSiurblys, HIGH); 
       CollectorState = "Įjungtas";
 
 //       Serial.print("\nSiurblio rele įjungta ON (Siurblio ciklas)\n");
       }
       if (((Kolektorius < config.k_uzsalimo_t) & (config.k_uzsalimas == 1)) or (config.k_nuorinimas == 1))
-      {  digitalWrite(RELAYPIN, HIGH); 
+      {  digitalWrite(SKSiurblys, HIGH); 
       CollectorState = "Įjungtas";
 //      k_uzsalimas_status = "Įjungta";
       }
       // ************* Siurblio išjungimas ******************
       if ((Kolektorius < Boileris + config.k_skirtumas) & (config.k_nuorinimas == 0 ) & (Kolektorius > config.k_uzsalimo_t)) 
-      {  digitalWrite(RELAYPIN, LOW); 
+      {  digitalWrite(SKSiurblys, LOW); 
       CollectorState = "Išjungtas";
 //      k_nuorinimas_status = "Išjungta";
       }
 }
+  else {
+    Ziema = "Taip!"; 
+    digitalWrite(SKSiurblys, LOW); 
+    CollectorState = "Išjungtas";}
 
+}

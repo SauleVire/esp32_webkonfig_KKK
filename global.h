@@ -114,6 +114,7 @@ struct strConfig {
  int k_intervalas;
  boolean k_uzsalimas;
  boolean k_nuorinimas;
+ boolean k_ziema;
 
   String emoncmsSrv;
   String apikey;
@@ -131,7 +132,7 @@ struct strConfig {
   int Bo_ON_T; // temperatūra boilerio siurbliui įjungti
   int Bo_OFF_T; // temperatūra boilerio siurbliui įšjungti
   boolean Bo_Rankinis_ijungimas; // Žymė rankiniam Boilerio siurblio valdymui
-  boolean Bo_Termostatas_ON; // Žymė rankiniam termostato įjungimui
+  boolean Bo_Termostatas; // Žymė rankiniam termostato įjungimui
   boolean Bo_Termostato_busena; // Žymė termostato busenai
   boolean Bo_Siurblio_busena; // Žymė termostato busenai
   /* ********** kintamieji Akumuliacinei talpai ******************* */
@@ -171,8 +172,8 @@ struct strConfig {
 
 //------------------------------------------
 //DS18B20
-#define ONE_WIRE_BUS 16 //Pin to which is attached a temperature sensor
-#define ONE_WIRE_MAX_DEV 15 //The maximum number of devices
+#define ONE_WIRE_BUS 14 //Pin to which is attached a temperature sensor
+#define ONE_WIRE_MAX_DEV 10 //The maximum number of devices
 
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature DS18B20(&oneWire);
@@ -205,7 +206,7 @@ boolean PV_siurblys = false;
 boolean AT_siurblys = false;
 boolean B_siurblys = false;
 #define REQUEST_freezing 5000   // 5000 millis= 5 sekundės
-static long timer_freezing=0;   // apsaugos nuo užšalimo tikrinimo laikas
+//static long timer_freezing=0;   // apsaugos nuo užšalimo tikrinimo laikas
 
 unsigned long PV_pauze =20000;
 unsigned long PV_pauzes_pertrauka =20000;
@@ -217,24 +218,28 @@ unsigned long Boilerio_siurblio_ijungimo_laikas;
 unsigned long Boilerio_siurblio_pertrauka =60000;
 byte PV_darinejimas = 60;
 
-int WindowSize = 30000;
+// int WindowSize = 30000;
 unsigned long windowStartTime;
 /////////////////////////////////////////////////////////////////////////////////
 boolean Laikmatis = false;
 /////////////////////////////////////////////////////////////////////////////////
 
 /* ******************** Relays *********************************** */
-#define RELAYPIN 32  // D4
-String RelayState = "OFF";
-String CollectorState = "OFF";
-String FreezingState = "OFF";
 
-#define AtSiurblys 7 // išvadas ak. talpos siurblio junginėjimui, Relė x
-#define BoTermostatas 7 // išvadas boilerio termostatui, Relė x
-#define BoSiurblys 7 // išvadas boilerio siurbliui, Relė x
-#define PVsiurblys 7 // išvadas pamaišymo vožtuvo siurbliui, Relė x
-#define PVuzdarymas 4 // PV uždarymas Relė 5
-#define PVatidarymas 4 // PV atidarymas Relė 4
+String Nuorinimas = "išjungta";
+String CollectorState = "išjungta";
+String FreezingState = "išjungta";
+String Bo_thermostatState = "išjungta";
+String Ziema = "išjungta";
+
+#define SKSiurblys 33  // Saulės kolektoriaus siurblys, Relė 1 (iš kairės) IO33
+#define AtSiurblys 32 // išvadas ak. talpos siurblio junginėjimui, Relė 2 (iš kairės) IO32
+#define BoTermostatas 13 // išvadas boilerio termostatui, Relė 3 (iš kairės) IO13
+#define BoSiurblys 12 // išvadas boilerio siurbliui, Relė 4 (iš kairės) IO12
+#define PVsiurblys 21 // išvadas pamaišymo vožtuvo siurbliui, Relė 5 (iš kairės) IO21
+#define PVuzdarymas 19 // PV uždarymas Relė 6 (iš kairės) IO19
+#define PVatidarymas 18 // PV atidarymas Relė 7 (iš kairės) IO18
+#define Laisva 5 // Laisva Relė 8 (iš kairės) IO5
 /*
 **
 ** emoncms duomenų siuntimas
@@ -311,6 +316,7 @@ void WriteConfig()
   EEPROM.write(48,config.k_intervalas); //
   EEPROM.write(52,config.intervalasEmon); 
   EEPROM.write(56,config.k_skirtumas);
+  EEPROM.write(161,config.k_ziema);
   WriteStringToEEPROM(64,config.ssid);
   WriteStringToEEPROM(96,config.password);
   WriteStringToEEPROM(128,config.ntpServerName);//16
@@ -325,8 +331,8 @@ void WriteConfig()
   EEPROM.write(150,config.Bo_ON_T);
   EEPROM.write(154,config.Bo_OFF_T);
   EEPROM.write(159,config.Bo_Rankinis_ijungimas);
-  EEPROM.write(160,config.Bo_Termostatas_ON);
-  EEPROM.write(161,config.Bo_Termostato_busena);
+  EEPROM.write(160,config.Bo_Termostatas);
+//  EEPROM.write(161,config.Bo_Termostato_busena);
 
   EEPROM.write(162,config.At_ON_T);
   EEPROM.write(166,config.At_OFF_T);
@@ -399,7 +405,8 @@ boolean ReadConfig()
     config.k_intervalas = EEPROM.read(48);
     config.intervalasEmon = EEPROM.read(52);
     config.k_skirtumas = EEPROM.read(56);
-    
+    config.k_ziema = EEPROM.read(161);
+
     config.ssid = ReadStringFromEEPROM(64);
     config.password = ReadStringFromEEPROM(96);
     config.ntpServerName = ReadStringFromEEPROM(128);//16
@@ -414,8 +421,8 @@ boolean ReadConfig()
     config.Bo_ON_T = EEPROM.read(150);
     config.Bo_OFF_T = EEPROM.read(154);
     config.Bo_Rankinis_ijungimas = EEPROM.read(159);
-    config.Bo_Termostatas_ON = EEPROM.read(160);
-    config.Bo_Termostato_busena = EEPROM.read(161);
+    config.Bo_Termostatas = EEPROM.read(160);
+//    config.Bo_Termostato_busena = EEPROM.read(161);
 
     config.At_ON_T = EEPROM.read(162);
     config.At_OFF_T = EEPROM.read(166);

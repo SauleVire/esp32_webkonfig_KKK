@@ -19,13 +19,14 @@ const char PAGE_EXAMPLE[] PROGMEM = R"=====(
 <div align="right">Oras :</div>
 <div align="right">Kolektoriaus siurblio būsena :</div>
 <div align="right">Laiko intervelas :</div>
-<div align="right">Apsauga (0- išjungta):</div>
-<div align="right">Nuorinimas (0- išjungta):</div>
+<div align="right">Užšalimo apsauga :</div>
+<div align="right">Nuorinimas :</div>
+<div align="right">Žiema :</div>
 <br>
 <div align="right">Boileris t :</div>
 <div align="right">Boilerio įjungimo t :</div>
 <div align="right">Boilerio išjungimo t :</div>
-<div align="right">Boilerio rankinis valdymas :</div>
+<div align="right">Boilerio termostatas :</div>
 <br>
 <div align="right">Akumuliacinės viršus t :</div>
 <div align="right">Akumuliacinės apačia t :</div>
@@ -47,11 +48,12 @@ const char PAGE_EXAMPLE[] PROGMEM = R"=====(
 <div><span id="laikas"></span> (s)</div> 
 <div><span id="apsauga"></span></div> 
 <div><span id="nuorinimas"></span></div>
+<div><span id="ziema"></span></div>
 <br>
 <div><span id="B_t"></span>&deg; C</div>
 <div><span id="B_on_t"></span>&deg; C</div>
 <div><span id="B_off_t"></span>&deg; C</div>
-<div><span id="Bo_rankinis"></span>&nbsp;</div>
+<div><span id="Bo_termostatas"></span>&nbsp;</div>
 <br>
 <div><span id="AV_t"></span>&deg; C</div>
 <div><span id="AA_t"></span>&deg; C</div>
@@ -108,13 +110,14 @@ void filldynamicdata()
   values += "O_t|" + (String)OrasL +  "|div\n";
   values += "rele|" + (String)CollectorState +  "|div\n";
   values += "laikas|" + (String) config.k_intervalas  +  "|div\n";
-  values += "apsauga|" + (String)config.k_uzsalimas +  "|div\n";
-  values += "nuorinimas|" + (String)config.k_nuorinimas +  "|div\n";
+  values += "apsauga|" + (String)FreezingState +  "|div\n";
+  values += "nuorinimas|" + (String)Nuorinimas +  "|div\n";
+  values += "ziema|" + (String)Ziema +  "|div\n";
   
   values += "B_t|" + (String)Boileris +  "|div\n";
   values += "B_on_t|" + (String)config.Bo_ON_T +  "|div\n";
   values += "B_off_t|" + (String)config.Bo_OFF_T +  "|div\n";
-  values += "Bo_rankinis|" + (String)config.Bo_Rankinis_ijungimas +  "|div\n";
+  values += "Bo_termostatas|" + (String)Bo_thermostatState +  "|div\n";
 
   values += "AV_t|" + (String)AkumuliacineV +  "|div\n";
   values += "AA_t|" + (String)AkumuliacineA +  "|div\n";
