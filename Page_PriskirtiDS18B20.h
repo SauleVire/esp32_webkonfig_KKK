@@ -26,7 +26,7 @@ const char Page_PriskirtiDS18B20[] PROGMEM = R"=====(
 </table>
 </form>
 <div align="center"><a href="/"   style="width:220px"  class="myButton" >Pradžia</a></div><br><br>
-<a href="https://saulevire.lt/emoncms9/dashboard/view/testas?apikey=read">sukaupti duomenys</a>
+
 </div></div>
 <script>
 window.onload = function ()

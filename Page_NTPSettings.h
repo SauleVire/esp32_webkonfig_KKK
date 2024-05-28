@@ -57,8 +57,7 @@ const char PAGE_NTPConfiguration[] PROGMEM = R"=====(
 </form>
 <div align="center"><a href="/"   style="width:220px"  class="myButton" >Pradžia</a></div>
 <br><br>
-<a href="https://saulevire.lt/emoncms9/dashboard/view/testas?apikey=read">sukaupti duomenys</a>
-v
+
 </div></div>
 <script>
   

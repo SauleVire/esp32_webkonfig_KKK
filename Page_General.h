@@ -43,7 +43,7 @@ const char PAGE_AdminGeneralSettings[] PROGMEM =  R"=====(
 </table></form>
 <div align="center"><a href="/"   style="width:220px"  class="myButton" >Pradžia</a></div>
 <br><br>
-<a href="https://saulevire.lt/emoncms9/dashboard/view/testas?apikey=read">sukaupti duomenys</a>
+
 
 </span>
 </div></div></center>
