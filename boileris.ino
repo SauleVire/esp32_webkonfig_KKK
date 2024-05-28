@@ -52,7 +52,7 @@ Serial.println();
 //       config.Bo_Termostato_busena = false;
        Bo_thermostatState = "Išjungta";    // kai išjungiamas elektrinis boilerio šildymas, pakeičiama išjungimo žymė
 #ifdef DEBUGboileris
-Serial.println("Ijungtas boilerio sildymas elektra I*S*J*U*N*G*T*A*S ***_OFF_ *** nuo- ");
+Serial.print("Ijungtas boilerio sildymas elektra I*S*J*U*N*G*T*A*S ***_OFF_ *** nuo- ");
 Serial.print(Boileris);Serial.println("°C");
 #endif      
    }     
