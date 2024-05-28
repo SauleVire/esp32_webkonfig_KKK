@@ -153,5 +153,8 @@ color: #fff;
 .textas {font-size: 12px;font-family:Arial; font-weight:bold;}
 .textas1 {font-size: 12px;font-family:Arial;}
 table {border-collapse: collapse;width: 100%;font-size: 12px;font-family:Arial;font-weight:bold;}
+.wifi {padding:2px;position:relative;top:0.5em;left:0.26em;}
+.wifi, .wifi:before {display:inline-block;border:6px double transparent;border-top-color:currentColor;border-radius:50%;}
+.wifi:before {content:'';width:0;height:0;}
 )=====";
- 
+

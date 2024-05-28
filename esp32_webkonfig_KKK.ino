@@ -39,7 +39,7 @@ WebConfig_KKK
 #include <WebServer.h>
 #include <ESPmDNS.h>
 #include <Update.h>
-#include <NtpClientLib.h>
+//#include <NtpClientLib.h>
 #include <WiFiClient.h>
 #include <Ticker.h>
 #include <WiFiUdp.h>
