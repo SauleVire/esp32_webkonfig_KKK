@@ -233,9 +233,9 @@ String Bo_thermostatState = "išjungta";
 String Ziema = "išjungta";
 
 #define SKSiurblys 33  // Saulės kolektoriaus siurblys, Relė 1 (iš kairės) IO33
-#define AtSiurblys 32 // išvadas ak. talpos siurblio junginėjimui, Relė 2 (iš kairės) IO32
-#define BoTermostatas 13 // išvadas boilerio termostatui, Relė 3 (iš kairės) IO13
-#define BoSiurblys 12 // išvadas boilerio siurbliui, Relė 4 (iš kairės) IO12
+#define BoTermostatas 32 // išvadas ak. talpos siurblio junginėjimui, Relė 2 (iš kairės) IO32
+#define BoSiurblys 13 // išvadas boilerio termostatui, Relė 3 (iš kairės) IO13
+#define AtSiurblys 12 // išvadas boilerio siurbliui, Relė 4 (iš kairės) IO12
 #define PVsiurblys 21 // išvadas pamaišymo vožtuvo siurbliui, Relė 5 (iš kairės) IO21
 #define PVuzdarymas 19 // PV uždarymas Relė 6 (iš kairės) IO19
 #define PVatidarymas 18 // PV atidarymas Relė 7 (iš kairės) IO18

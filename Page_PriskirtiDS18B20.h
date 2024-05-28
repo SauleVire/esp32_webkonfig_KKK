@@ -16,11 +16,11 @@ const char Page_PriskirtiDS18B20[] PROGMEM = R"=====(
 <tr><td align="center">Rasta</td><td align="center">Priskirta</td></tr>
 <tr><td align="left">t 0 : <span id="t0"></span></td><td align="right">Kolektorius: <input type="text" id="Kid" name="Kid" size="2" maxlength="2" value=""></td></tr>
 <tr><td align="left">t 1 : <span id="t1"></span></td><td align="right">Boileris: <input type="text" id="Bid" name="Bid" size="2" maxlength="2" value=""></td></tr>
-<tr><td align="left">t 2 : <span id="t2"></span></td><td align="right">Oras: <input type="text" id="OLid" name="OLid" size="2" maxlength="2" value=""></td></tr>
-<tr><td align="left">t 3 : <span id="t3"></span></td><td align="right">Akumuliacinės viršus: <input type="text" id="OKid" name="OKid" size="2" maxlength="2" value=""></td></tr>
-<tr><td align="left">t 4 : <span id="t4"></span></td><td align="right">Akumuliacinės apačia: <input type="text" id="AVid" name="AVid" size="2" maxlength="2" value=""></td></tr>
+<tr><td align="left">t 2 : <span id="t2"></span></td><td align="right">Oras lauke: <input type="text" id="OLid" name="OLid" size="2" maxlength="2" value=""></td></tr>
+<tr><td align="left">t 3 : <span id="t3"></span></td><td align="right">Oras kambary: <input type="text" id="OKid" name="OKid" size="2" maxlength="2" value=""></td></tr>
+<tr><td align="left">t 4 : <span id="t4"></span></td><td align="right">Akumuliacinės viršus: <input type="text" id="AVid" name="AVid" size="2" maxlength="2" value=""></td></tr>
 <tr><td align="left">t 4 : <span id="t5"></span></td><td align="right">Akumuliacinės apačia: <input type="text" id="AAid" name="AAid" size="2" maxlength="2" value=""></td></tr>
-<tr><td align="left">t 4 : <span id="t6"></span></td><td align="right">Akumuliacinės apačia: <input type="text" id="PVid" name="PVid" size="2" maxlength="2" value=""></td></tr>
+<tr><td align="left">t 4 : <span id="t6"></span></td><td align="right">Pamaišymo vožtuvas: <input type="text" id="PVid" name="PVid" size="2" maxlength="2" value=""></td></tr>
 <tr><td align="left">t 5 : <span id="t7"></span></td><td align="right">Katilas: <input type="text" id="KKKid" name="KKKid" size="2" maxlength="2" value=""></td></tr>
 <tr><td colspan="2" align="center"><input type="submit" style="width:150px" class="myButton" value="Įrašyti"></td></tr>
 </table>

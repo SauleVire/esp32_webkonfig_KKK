@@ -10,11 +10,19 @@ const char PAGE_EXAMPLE[] PROGMEM = R"=====(
   <div class="content">
 
 <table border="0"  cellspacing="0" cellpadding="3" style="width:300px" >
-<th colspan="2">
-<a href="/admin.html" class="myButton">Valdiklio konfigūravimas</a>
-<br>
-<b>Dabartinė KKK ūkio būsena</b>
-</th><tr><td>
+
+<tr>
+<th colspan="1"><a href="/admin.html" class="myButton">Valdiklio konfigūravimas</a></th>
+<th><div class='wifi'></div></th>
+<th><div><span id="wifiSignal"></span></div></th>
+</tr>
+
+<tr>
+<th colspan="3"><b>Dabartinė KKK ūkio būsena</b></th>
+</tr>
+
+<tr>
+<th colspan="1">
 <div align="right">Kolektorius :</div>
 <div align="right">Oras :</div>
 <div align="right">Kolektoriaus siurblio būsena :</div>
@@ -41,7 +49,8 @@ const char PAGE_EXAMPLE[] PROGMEM = R"=====(
 <div align="right">PVožtuvo išjungimo t :</div>
 <div align="right">PVožtuvo rankinis valdymas :</div>
 
-</td><td> 
+</th>
+<th colspan="2">
 <div><span id="K_t"></span>&deg; C</div>
 <div><span id="O_t"></span>&deg; C</div> 
 <div><span id="rele"></span>&nbsp;</div> 
@@ -68,10 +77,8 @@ const char PAGE_EXAMPLE[] PROGMEM = R"=====(
 <div><span id="PV_off"></span>&deg; C</div>
 <div><span id="PV_rankinis"></span>&nbsp;</div>
 
-
-
-</td></tr>
-<th colspan=2><a href="/"  class="myButton">Atnaujinti</a></th>
+</th></tr>
+<tr><th colspan=3><a href="/"  class="myButton">Atnaujinti</a></th></tr>
 </table>
 <hr>
 <span class="textas">Dabar : <span id="x_ntp"></span><br>
@@ -102,10 +109,17 @@ const char PAGE_EXAMPLE[] PROGMEM = R"=====(
 )=====";
 #endif
 
+String WiFiSignal() {
+  float Signal = WiFi.RSSI();
+  Signal = 90 / 40.0 * Signal + 212.5; // From Signal = 100% @ -50dBm and Signal = 10% @ -90dBm and y = mx + c
+  if (Signal > 100) Signal = 100;
+  return " " + String(Signal, 0) + "%";
+}
 
 void filldynamicdata()
 {        
     String values ="";
+  values += "wifiSignal|" + (String)(WiFiSignal())+ "|div\n";
   values += "K_t|" + (String)Kolektorius +  "|div\n";
   values += "O_t|" + (String)OrasL +  "|div\n";
   values += "rele|" + (String)CollectorState +  "|div\n";
