@@ -7,6 +7,10 @@ String FIRMWARE_VERSION = "v2.2";
 pridėtas nuorinimas
 2019_09_25 v2.0 pridėta akumuliacinės talpos, boilerio, KKK valdymas
 2022_12_29 v2.1 ištaisyta WiFi dalis, veikia tiek DHCP, tiek statinis adresų priskyrimas
+2024_05_28 v2.2 pridėta WiFi ženkliukas, relės pritaikytos plokštei "T-Relay 5V 8 Channel Relay Module ESP32 Wireless Development Board" (https://www.lilygo.cc/products/t-relay-5v-8-channel-relay)
+
+Testuota su arduino-esp32 2.0.17 versija
+
 */
  
 WebServer server(80);                  // The Webserver
