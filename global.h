@@ -1,7 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-String FIRMWARE_VERSION = "v2.1";
+String FIRMWARE_VERSION = "v2.2";
 /* 
 2019_04_16 19:59 v1.1 Programos naujinimas, pataisyti užšalimo tikrinimo, temperatūrų matavimo algoritmai,
 pridėtas nuorinimas
