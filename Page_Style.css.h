@@ -157,4 +157,4 @@ table {border-collapse: collapse;width: 100%;font-size: 12px;font-family:Arial;f
 .wifi, .wifi:before {display:inline-block;border:6px double transparent;border-top-color:currentColor;border-radius:50%;}
 .wifi:before {content:'';width:0;height:0;}
 )=====";
- 
+
