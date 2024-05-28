@@ -468,7 +468,7 @@ boolean ReadConfig()
 **  NTP 
 **
 */
-//const int NTP_PACKET_SIZE = 48; 
+const int NTP_PACKET_SIZE = 48; 
 byte packetBuffer[ NTP_PACKET_SIZE]; 
 void NTPRefresh()
 {

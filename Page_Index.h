@@ -147,8 +147,8 @@ void filldynamicdata()
   values += "PV_rankinis|" + (String)config.PV_rankinis_ijungimas +  "|div\n";
 
   values += "x_ntp|" + (String)DateTime.year + "." + (String)DateTime.month + "." + (String)DateTime.day + " " + (String)DateTime.hour + ":" + (String)DateTime.minute + ":" + (String)DateTime.second + " |div\n";
-  values += "x_ntp2|" + (String)(NTP.getTimeDateString (NTP.getFirstSync ()).c_str ())+ " |div\n";
-  values += "x_ntp1|" + (String)(NTP.getUptimeString ())+ " |div\n";
+//  values += "x_ntp2|" + (String)(NTP.getTimeDateString (NTP.getFirstSync ()).c_str ())+ " |div\n";
+//  values += "x_ntp1|" + (String)(NTP.getUptimeString ())+ " |div\n";
     server.send ( 200, "text/plain", values); 
 }
 
